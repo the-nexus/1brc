@@ -1,20 +1,27 @@
 
-CXX=g++
-CXX_ARGS=-Wall -std=c++20
+# global variables
 
-all: obrc
+PROJECT_NAME = onebrc
 
-obrc: build/main.o build/solution_a.o
-	$(CXX) $(CXX_ARGS) -o obrc build/main.o build/solution_a.o
+SOURCE_DIR = source/
+TARGET_DIR = build/
 
-build/main.o: source/main.cpp
-	mkdir -p build
-	$(CXX) $(CXX_ARGS) -c source/main.cpp -o build/main.o
-	
-build/solution_a.o: source/solution_a.cpp
-	mkdir -p build
-	$(CXX) $(CXX_ARGS) -c source/solution_a.cpp -o build/solution_a.o
+CXX = g++
+CXX_ARGS = -std=c++20 -Wall -Werror -O3
+
+# target commands
+
+all: $(PROJECT_NAME)
 
 clean:
-	rm -rf build
-	rm -f obrc
+	rm -rf $(TARGET_DIR)
+
+$(PROJECT_NAME): $(SOURCE_DIR)$(PROJECT_NAME).cpp
+	mkdir -p $(TARGET_DIR)$(PROFILE_DIR)
+	$(CXX) $(CXX_ARGS) $(CXX_FLAGS) $(SOURCE_DIR)$(PROJECT_NAME).cpp -o $(TARGET_DIR)$(PROFILE_DIR)$(PROJECT_NAME)
+
+# profile commands
+
+nochrono: CXX_FLAGS = -DNO_CHRONO
+nochrono: PROFILE_DIR = nochrono/
+nochrono: $(PROJECT_NAME)

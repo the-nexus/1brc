@@ -1,10 +1,10 @@
 # directories
 .vscode/
-bin/
 build/
+debug/
+release/
 
-# file formats
+# files
 *.o
-
-# executables
-obrc
+measurements.txt
+onebrc

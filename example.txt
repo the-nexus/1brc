@@ -8,3 +8,4 @@ Tiquipaya;93.0
 Daegu;28.5
 Samarinda;-12.8
 Chennai;27.6
+Kelīshād va Sūdarjān;-89.9
