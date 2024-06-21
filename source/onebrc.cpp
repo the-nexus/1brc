@@ -1,12 +1,12 @@
 
-#define WITH_CHRONO !defined(NO_CHRONO)
+#define WITH_CHRONO !defined(NO_CHRONO) && NO_CHRONO == 0
 
 #include <filesystem>
 #include <iostream>
 
 #include "solution_a.h"
 
-#if WITH_CHRONO
+#ifndef NO_CHRONO
 #include <chrono>
 #endif
 
@@ -18,7 +18,11 @@ int main(int argc, char* argv[])
         return -1;
     }
 
-#if WITH_CHRONO
+#ifdef NO_CHRONO
+
+    solution_a::display(argv[1]);
+
+#else // NO_CHRONO
 
     const auto start = std::chrono::high_resolution_clock::now();
     solution_a::display(argv[1]);
@@ -29,12 +33,12 @@ int main(int argc, char* argv[])
 
     const int64_t deltaTimeM = std::chrono::duration_cast<std::chrono::minutes>(deltaTime).count();
     const int64_t deltaTimeS = std::chrono::duration_cast<std::chrono::seconds>(deltaTime).count();
-    const int64_t deltaTimeNs = std::chrono::duration_cast<std::chrono::nanoseconds>(deltaTime).count();
+    const int64_t deltaTimeUs = std::chrono::duration_cast<std::chrono::microseconds>(deltaTime).count();
 
     const int64_t partS = deltaTimeS - deltaTimeM * 60;
-    const int64_t partNs = deltaTimeNs - deltaTimeS * 1000;
+    const int64_t partMs = deltaTimeUs - deltaTimeS * 1'000'000;
 
-    const double seconds = static_cast<double>(partS) + static_cast<double>(partNs) / 1000.0;
+    const double seconds = static_cast<double>(partS) + static_cast<double>(partMs) / 1'000'000.0;
 
     if (deltaTimeM > 0)
     {
@@ -42,12 +46,8 @@ int main(int argc, char* argv[])
     }
     
     std::cout << seconds << "s" << std::endl;
-
-#else // WITH_CHRONO
-
-    solution_a::display(argv[1]);
     
-#endif // WITH_CHRONO
+#endif // NO_CHRONO
 
     return 0;
 }
