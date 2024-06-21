@@ -1,0 +1,9 @@
+# directories
+.vscode/
+bin/
+
+# file formats
+*.o
+
+# executables
+obrc
