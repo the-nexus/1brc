@@ -1,6 +1,7 @@
 # directories
 .vscode/
 bin/
+build/
 
 # file formats
 *.o
