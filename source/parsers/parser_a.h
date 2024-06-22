@@ -8,33 +8,16 @@
 #include <iomanip>
 #include <iostream>
 #include <iterator>
-#include <limits>
 #include <unordered_map>
 #include <string>
 #include <string_view>
 #include <utility>
 
-namespace solution_a
+#include "../models/station.h"
+
+namespace parser_a
 {
-    constexpr unsigned short maxStationCount = 10'000;
-
-    struct station_data_t
-    {
-        station_data_t() = delete;
-        station_data_t(const float value)
-            : minValue(value)
-            , maxValue(value)
-            , sumValue(value)
-            , sumCount(1)
-            {}
-
-        float minValue = std::numeric_limits<float>::max();
-        float maxValue = std::numeric_limits<float>::min();
-        float sumValue = 0.f;
-        unsigned int sumCount = 0;
-    };
-
-    void process_file(const std::filesystem::path& filePath)
+    void parse(const std::filesystem::path& filePath)
     {
         std::ifstream file {filePath};
         if (!file)
@@ -44,10 +27,10 @@ namespace solution_a
         }
 
         std::unordered_map<size_t, std::string> labelMap;
-        labelMap.reserve(maxStationCount);
+        labelMap.reserve(models::station::maxInstanceCount);
 
-        std::unordered_map<size_t, station_data_t> dataMap;
-        dataMap.reserve(maxStationCount);
+        std::unordered_map<size_t, models::station> stationMap;
+        stationMap.reserve(models::station::maxInstanceCount);
 
         std::string line;
         while (std::getline(file, line))
@@ -64,15 +47,15 @@ namespace solution_a
             std::from_chars(valueView.data(), valueView.data() + valueView.size(), value);
 
             const size_t labelHash = std::hash<std::string_view>{}(labelView);
-            const auto [it, emplaced] = dataMap.try_emplace(labelHash, value);
+            const auto [it, emplaced] = stationMap.try_emplace(labelHash, value);
 
             if (!emplaced)
             {
-                station_data_t& data = it->second;
-                data.minValue = std::min(data.minValue, value);
-                data.maxValue = std::max(data.maxValue, value);
-                data.sumValue += value;
-                ++data.sumCount;
+                models::station& model = it->second;
+                model.minValue = std::min(model.minValue, value);
+                model.maxValue = std::max(model.maxValue, value);
+                model.sumValue += value;
+                ++model.instanceCount;
             }
             else
             {
@@ -86,19 +69,18 @@ namespace solution_a
         bool isFirstEntry = true;
         const std::streamsize default_cout_precision = std::cout.precision();
         std::cout << std::fixed << std::setprecision(1) << "{";
-        for (const auto& [labelHash, data] : dataMap)
+        for (const auto& [labelHash, model] : stationMap)
         {
             std::cout << (isFirstEntry ? "" : ",");
             isFirstEntry = false;
 
-            const float meanValue = data.sumValue / static_cast<float>(data.sumCount);
             const std::string& label = labelMap[labelHash];
             
             std::cout << std::quoted(label)
                 << ":{ "
-                << "\"min\":" << data.minValue
-                << ",\"max\":" << data.maxValue
-                << ",\"mean\":" << meanValue
+                << "\"min\":" << model.minValue
+                << ",\"max\":" << model.maxValue
+                << ",\"mean\":" << model.get_mean()
                 << "}";
         }
         std::cout << "}" << std::setprecision(default_cout_precision) << std::defaultfloat << std::endl;
