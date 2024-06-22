@@ -1,8 +1,8 @@
 
 #include <iostream>
 
-#include "chrono_utils.h"
-#include "solution_a.h"
+#include "solutions/solution_a.h"
+#include "utils/chrono_utils.h"
 
 int main(int argc, char* argv[])
 {
