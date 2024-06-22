@@ -31,7 +31,7 @@ namespace solution_a
         float minValue = std::numeric_limits<float>::max();
         float maxValue = std::numeric_limits<float>::min();
         float sumValue = 0.f;
-        unsigned short sumCount = 0;
+        unsigned int sumCount = 0;
     };
 
     void process_file(const std::filesystem::path& filePath)
