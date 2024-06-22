@@ -3,6 +3,7 @@
 build/
 debug/
 release/
+nochrono/
 
 # files
 *.o
