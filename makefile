@@ -22,6 +22,6 @@ $(PROJECT_NAME): $(SOURCE_DIR)$(PROJECT_NAME).cpp
 
 # profile commands
 
-nochrono: CXX_FLAGS = -DNO_CHRONO
-nochrono: PROFILE_DIR = nochrono/
-nochrono: $(PROJECT_NAME)
+withchrono: CXX_FLAGS = -DWITH_CHRONO
+withchrono: PROFILE_DIR = withchrono/
+withchrono: $(PROJECT_NAME)

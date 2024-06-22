@@ -5,6 +5,7 @@
 #include <charconv>
 #include <filesystem>
 #include <fstream>
+#include <iomanip>
 #include <iostream>
 #include <iterator>
 #include <limits>
@@ -83,22 +84,23 @@ namespace solution_a
         file.close();
 
         bool isFirstEntry = true;
-        std::cout << "{";
+        const std::streamsize default_cout_precision = std::cout.precision();
+        std::cout << std::fixed << std::setprecision(1) << "{";
         for (const auto& [labelHash, data] : dataMap)
         {
-            std::cout << (isFirstEntry ? "\n" : ",\n");
+            std::cout << (isFirstEntry ? "" : ",");
             isFirstEntry = false;
 
             const float meanValue = data.sumValue / static_cast<float>(data.sumCount);
             const std::string& label = labelMap[labelHash];
             
             std::cout << std::quoted(label)
-                << ": { "
-                << "\"min\": " << data.minValue
-                << ", \"max\": " << data.maxValue
-                << ", \"mean\": " << meanValue
-                << " }";
+                << ":{ "
+                << "\"min\":" << data.minValue
+                << ",\"max\":" << data.maxValue
+                << ",\"mean\":" << meanValue
+                << "}";
         }
-        std::cout << "\n}" << std::endl;
+        std::cout << "}" << std::setprecision(default_cout_precision) << std::defaultfloat << std::endl;
     }
 };
