@@ -19,6 +19,7 @@ namespace parsers
 
 void parsers::impl_2::operator()(const std::filesystem::path& filePath) const
 {
+    //std::ifstream file {filePath, std::ios::binary};
     std::ifstream file {filePath, std::ios::binary};
     if (!file)
     {

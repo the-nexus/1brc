@@ -9,23 +9,20 @@
 
 namespace parsers
 {
-    template <typename ...Args>
-    void parse(Args&& ...args);
-
-    namespace
-    {
-        typedef parsers::impl_1 impl_best_t;
+    typedef parsers::impl_1 impl_best_t;
 
 #if !defined(WITH_PARSER)
-        typedef impl_best_t impl_t;
+    typedef impl_best_t impl_t;
 #elif WITH_PARSER == 1
-        typedef parsers::impl_1 impl_t;
+    typedef impl_1 impl_t;
 #elif WITH_PARSER == 2
-        typedef parsers::impl_2 impl_t;
+    typedef impl_2 impl_t;
 #else // WITH_PARSER
-        typedef impl_best_t impl_t;
+    typedef impl_best_t impl_t;
 #endif // WITH_PARSER
-    }
+
+    template <typename ...Args>
+    void parse(Args&& ...args);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
