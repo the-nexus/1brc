@@ -1,8 +1,7 @@
 
 #include <iostream>
 
-#include "parsers/parser_a.h"
-#include "utils/chrono_utils.h"
+#include "parsers/parsers.h"
 
 int main(int argc, char* argv[])
 {
@@ -12,17 +11,5 @@ int main(int argc, char* argv[])
         return -1;
     }
 
-#ifdef WITH_CHRONO
-
-    const auto dt = chrono_utils::measure_execution(&parser_a::parse, argv[1]);
-    std::cout << "Completed in ";
-    chrono_utils::display(dt);
-    std::cout << std::endl;
-
-#else // WITH_CHRONO
-    
-    parser_a::parse(argv[1]);
-
-#endif // WITH_CHRONO
-    return 0;
+    parsers::parse(argv[1]);
 }
